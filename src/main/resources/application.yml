@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: simulation app
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: llama3.1
+  datasource:
+    hikari:
+      driver-class-name: org.mariadb.jdbc.Driver
+      jdbc-url: jdbc:mariadb://localhost:3306/s_core
+      username: root
+      password: root
+      connection-timeout: 30000
+      idle-timeout: 20000
+      max-lifetime: 25000
+      minimum-idle: 10
+      maximum-pool-size: 20
+      leak-detection-threshold: 10000
+      validation-timeout: 5000
+      connection-test-query: SELECT 1
+    jpa:
+      show-sql: false
+      properties:
+        hibernate:
+          order_inserts: true
+          order_updates: true
+          jdbc:
+            batch_size: 1000
+            fetch_size: 1000
+            batch_versioned_data: true
+          ddl-auto: none
+          dialect: org.hibernate.dialect.MariaDBDialect
+          naming:
+            physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+server:
+  port: 8081
+
+springdoc:
+  swagger-ui:
+    path: /api-docs
+    disable-swagger-default-url: true
+  api-docs:
+    path: /api-doc
