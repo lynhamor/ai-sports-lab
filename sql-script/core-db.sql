@@ -26,16 +26,6 @@ CREATE TABLE `nba_team_stats` (
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_uca1400_ai_ci;
 
--- s_core.game_rule definition
-
-CREATE TABLE `game_rule` (
-                             `id` bigint(20) NOT NULL AUTO_INCREMENT,
-                             `rule_key` varchar(100) NOT NULL,
-                             `rule_value` longtext NOT NULL,
-                             `game_id` bigint(20) NOT NULL,
-                             PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
-
 -- s_core.game definition
 
 CREATE TABLE `game` (
@@ -44,4 +34,14 @@ CREATE TABLE `game` (
                         `game_category` varchar(100) NOT NULL,
                         `is_enable` tinyint(1) DEFAULT 1,
                         PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+-- s_core.game_rule definition
+
+CREATE TABLE `game_rule` (
+                             `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                             `game_id` bigint(20) NOT NULL,
+                             `rule_key` varchar(100) NOT NULL,
+                             `rule_value` longtext NOT NULL,
+                             PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
