@@ -1,4 +1,4 @@
-package com.api.simulation.dto;
+package com.api.simulation.dto.nba;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

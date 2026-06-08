@@ -1,4 +1,4 @@
-package com.api.simulation.dto;
+package com.api.simulation.dto.nba;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -13,11 +13,13 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NbaTeamDto {
+public class NbaTeamRatingDto {
 
     private Long id;
-    private String city;
-    private String name;
-    private String conferenceSide;
+
     private BigDecimal winRate;
+
+    private BigDecimal offensiveRate;
+
+    private BigDecimal defensiveRate;
 }
