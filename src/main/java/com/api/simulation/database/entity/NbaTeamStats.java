@@ -27,7 +27,7 @@ public class NbaTeamStats {
     private Long teamId;
 
     @ColumnDefault("0.5000")
-    @Column(name = "winRate", precision = 5, scale = 4)
+    @Column(name = "win_rate", precision = 5, scale = 4)
     private BigDecimal winRate;
 
     @ColumnDefault("0.5000")

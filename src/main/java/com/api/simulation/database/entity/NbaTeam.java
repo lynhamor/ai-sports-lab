@@ -27,8 +27,8 @@ public class NbaTeam {
 
     @Size(max = 100)
     @NotNull
-    @Column(name = "team_side", nullable = false, length = 100)
-    private String teamSide;
+    @Column(name = "conference_side", nullable = false, length = 100)
+    private String conferenceSide;
 
     @Size(max = 100)
     @NotNull

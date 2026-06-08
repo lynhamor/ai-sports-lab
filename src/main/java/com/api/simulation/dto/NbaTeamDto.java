@@ -18,6 +18,6 @@ public class NbaTeamDto {
     private Long id;
     private String city;
     private String name;
-    private String side;
+    private String conferenceSide;
     private BigDecimal winRate;
 }

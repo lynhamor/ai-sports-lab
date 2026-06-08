@@ -37,7 +37,7 @@ public class NbaService {
                 .map(t-> NbaTeam.builder()
                         .teamName(t.getName())
                         .teamCity(t.getCity())
-                        .teamSide(t.getSide())
+                        .conferenceSide(t.getConferenceSide())
                         .build()
                     ).toList();
 
@@ -61,7 +61,7 @@ public class NbaService {
                                         "id", team.getId(),
                                         "city", team.getTeamCity(),
                                         "name", team.getTeamName(),
-                                        "side", team.getTeamSide()
+                                        "side", team.getConferenceSide()
                                 ))
                                 .toList()
                 )
@@ -72,13 +72,9 @@ public class NbaService {
                 teamsJson
         );
 
-        String result = chatClient
-                .prompt(prompt)
+        NbaTeamRatingResponse response =  chatClient.prompt(prompt)
                 .call()
-                .content();
-
-        NbaTeamRatingResponse response =
-                objectMapper.readValue(result, NbaTeamRatingResponse.class);
+                .entity(NbaTeamRatingResponse.class);
 
         List<NbaTeamStats> teamStats =
                 response.getTeams().stream()
