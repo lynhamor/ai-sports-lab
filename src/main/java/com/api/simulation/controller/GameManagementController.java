@@ -43,12 +43,12 @@ public class GameManagementController {
             summary = "Update Game Rule",
             description = "Update existing rule value for a game."
     )
-    @PatchMapping("/{gameId}/game-rule")
+    @PatchMapping("/{gameRuleId}/game-rule")
     public ResponseEntity<Object> udpateGameRule(
-            @PathVariable Long gameId,
+            @PathVariable Long gameRuleId,
             @RequestParam String ruleValue
     ){
-        return gameManagementService.updateGameRule(gameId, ruleValue);
+        return gameManagementService.updateGameRule(gameRuleId, ruleValue);
     }
 
     @Operation(
