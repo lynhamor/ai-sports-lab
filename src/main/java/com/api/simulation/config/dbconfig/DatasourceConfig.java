@@ -1,4 +1,4 @@
-package com.api.simulation.config.datasource;
+package com.api.simulation.config.dbconfig;
 
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;

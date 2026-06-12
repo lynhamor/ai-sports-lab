@@ -5,7 +5,7 @@ import com.api.simulation.database.entity.GameRule;
 import com.api.simulation.dto.PageDto;
 import com.api.simulation.dto.gameMngt.GameFilterDto;
 import com.api.simulation.dto.gameMngt.GameRuleFilterDto;
-import com.api.simulation.utlis.GameUtility;
+import com.api.simulation.utlis.transaction.GameUtility;
 import com.api.simulation.utlis.SortUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -35,7 +35,7 @@ public class GameManagementService {
         Sort sort = SortUtil.build(filterDto);
         Pageable pageable = PageRequest.of(page, filterDto.getSize(), sort);
 
-        Page<Game> pageResult = gameUtility.getGames(pageable);
+        Page<Game> pageResult = gameUtility.pageGames(pageable);
         PageDto<Game> pageDto = new PageDto<>(pageResult);
 
         return ResponseEntity.ok(pageDto);
@@ -55,7 +55,7 @@ public class GameManagementService {
         Sort sort = SortUtil.build(filterDto);
         Pageable pageable = PageRequest.of(page, filterDto.getSize(), sort);
 
-        Page<GameRule> pageResult = gameUtility.getGameRules(pageable);
+        Page<GameRule> pageResult = gameUtility.pageGameRules(pageable);
         PageDto<GameRule> pageDto = new PageDto<>(pageResult);
 
         return ResponseEntity.ok(pageDto);

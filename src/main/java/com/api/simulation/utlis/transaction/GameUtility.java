@@ -1,4 +1,4 @@
-package com.api.simulation.utlis;
+package com.api.simulation.utlis.transaction;
 
 import com.api.simulation.database.entity.Game;
 import com.api.simulation.database.entity.GameRule;
@@ -7,10 +7,7 @@ import com.api.simulation.database.repository.GameRuleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 
 /**
@@ -36,7 +33,7 @@ public class GameUtility {
      * @param pageable pagination information
      * @return paginated list of {@link Game}
      */
-    public Page<Game> getGames(Pageable pageable) {
+    public Page<Game> pageGames(Pageable pageable) {
         return gameRepository.findAll(pageable);
     }
 
@@ -46,7 +43,7 @@ public class GameUtility {
      * @param pageable pagination information
      * @return paginated list of {@link GameRule}
      */
-    public Page<GameRule> getGameRules(Pageable pageable) {
+    public Page<GameRule> pageGameRules(Pageable pageable) {
         return gameRuleRepository.findAll(pageable);
     }
 

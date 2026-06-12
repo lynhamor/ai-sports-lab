@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,7 +50,7 @@ public class NbaController {
                     description = "Internal server error while generating teams"
             )
     })
-    @GetMapping("/team")
+    @PostMapping("/team")
     public ResponseEntity<Object> generateTeam() throws JsonProcessingException {
 
         return ResponseEntity.ok(nbaService.generateTeam());
@@ -72,7 +73,7 @@ public class NbaController {
             @ApiResponse(responseCode = "200", description = "NBA team statistics generated successfully"),
             @ApiResponse(responseCode = "500", description = "Failed to generate NBA team statistics")
     })
-    @GetMapping("/team-stats")
+    @PostMapping("/team-stats")
     public ResponseEntity<Object> generateTeamStats() throws JsonProcessingException {
 
         return nbaService.generateTeamStats();

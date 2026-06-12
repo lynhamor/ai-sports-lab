@@ -44,3 +44,10 @@ springdoc:
     disable-swagger-default-url: true
   api-docs:
     path: /api-doc
+
+# check AOP LOG
+logging:
+  level:
+    org.springframework.transaction: TRACE
+    org.springframework.transaction.interceptor: TRACE
+    org.springframework.aop: DEBUG
