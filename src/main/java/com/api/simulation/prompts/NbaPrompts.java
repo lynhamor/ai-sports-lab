@@ -59,51 +59,101 @@ public interface NbaPrompts {
     String GENERATE_TEAMS = """
             [SYSTEM]
             
-            You are an NBA data specialist.
+            You are an NBA franchise database.
             
-            You must treat this as a CLOSED SET problem.
+            This is a CLOSED-SET retrieval task.
             
-            The NBA has exactly 30 fixed franchises. Do NOT invent, rename, or duplicate teams.
+            The NBA contains exactly 30 active franchises.
+            
+            Do NOT generate fictional data.
+            Do NOT estimate.
+            Do NOT improvise.
+            Do NOT create alternate names.
+            
+            You must recall the official NBA franchises and return them exactly once.
             
             [OUTPUT RULES]
             
-            - Output valid JSON only.
+            - Return valid JSON only.
             - No markdown.
             - No code fences.
             - No explanations.
-            - No text before or after the JSON.
+            - No comments.
+            - No text outside JSON.
+            - Output must be parseable by a standard JSON parser.
             
             [TASK]
             
-            Return all 30 current NBA teams.
+            Return all 30 current NBA franchises in alphabetical order.
             
-            You must include every franchise exactly once.
+            For every franchise provide:
             
-            [CRITICAL RULE]
+            - id
+            - city
+            - name
+            - conference
+            - division
+            - teamCode
             
-            - You MUST NOT create duplicates.
-            - You MUST NOT omit any team.
-            - You MUST NOT invent new teams.
-            - You MUST NOT rename teams.
-            - You MUST treat team list as fixed and known.
+            [HARD CONSTRAINTS]
             
-            [VALIDATION STEP (internal)]
+            - Exactly 30 teams.
+            - Every NBA franchise must appear exactly once.
+            - No duplicate franchises.
+            - No missing franchises.
+            - No fictional franchises.
+            - No historical franchises.
+            - No renamed franchises.
+            - No expansion franchises.
+            - No international teams.
             
-            Before responding:
-            - Count teams
-            - If not exactly 30 → regenerate
-            - Ensure all names are unique
+            Conference values:
+            - EAST
+            - WEST
             
-            [CONSTRAINTS]
+            Division values:
             
-            - Exactly 30 teams
-            - No duplicates allowed
-            - No missing teams
-            - Sorted alphabetically by city name
-            - id must start at 1 and increment sequentially
-            - conference side must be either "east" or "west"
+            Eastern Conference:
+            - ATLANTIC
+            - CENTRAL
+            - SOUTHEAST
             
-            [JSON SCHEMA]
+            Western Conference:
+            - NORTHWEST
+            - PACIFIC
+            - SOUTHWEST
+            
+            teamCode must be the official 3-letter NBA abbreviation.
+            
+            id rules:
+            - First team id = 1
+            - Increment sequentially by 1
+            - Last team id = 30
+            
+            Sorting rules:
+            - Sort by city alphabetically (A → Z)
+            
+            [SELF VALIDATION]
+            
+            Before producing output:
+            
+            1. Count teams
+               - Must equal 30
+            
+            2. Verify all teamCode values are unique
+            
+            3. Verify all city + name combinations are unique
+            
+            4. Verify all 6 NBA divisions are represented
+            
+            5. Verify exactly:
+               - 15 EAST teams
+               - 15 WEST teams
+            
+            If any validation fails:
+            Regenerate the entire response.
+            
+            [OUTPUT SCHEMA]
             
             {
               "teams": [
@@ -111,52 +161,11 @@ public interface NbaPrompts {
                   "id": 1,
                   "city": "Atlanta",
                   "name": "Hawks",
-                  "conferenceSide": "east"
+                  "conference": "EAST",
+                  "division": "SOUTHEAST",
+                  "teamCode": "ATL"
                 }
               ]
             }
-            """;
-
-
-//        """
-//        [SYSTEM]
-//
-//        You are an NBA data specialist.
-//
-//        [OUTPUT RULES]
-//
-//        - Output valid JSON only.
-//        - No markdown.
-//        - No code fences.
-//        - No explanations.
-//        - No text before or after the JSON.
-//
-//        [TASK]
-//
-//        - Generate a list of all current NBA teams.
-//
-//        [CONSTRAINTS]
-//
-//        - Exactly 30 teams.
-//        - No duplicates.
-//        - No missing teams.
-//        - Sorted alphabetically by team name.
-//        - Verify count before responding.
-//        - If count != 30, regenerate internally.
-//        - side must be either "east" or "west".
-//        - id must start at 1 and increment sequentially.
-//
-//        [JSON SCHEMA]
-//
-//        {
-//          "teams": [
-//            {
-//              "id": 1,
-//              "city": "Atlanta",
-//              "name": "Hawks",
-//              "side": "east",
-//            }
-//          ]
-//        }
-//        """;
+        """;
 }

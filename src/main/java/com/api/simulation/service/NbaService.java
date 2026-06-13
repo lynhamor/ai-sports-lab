@@ -1,10 +1,15 @@
 package com.api.simulation.service;
 
+import com.api.simulation.constants.nba.Season;
+import com.api.simulation.database.entity.core.Game;
+import com.api.simulation.database.entity.core.GameRule;
 import com.api.simulation.database.entity.nba.NbaTeam;
 import com.api.simulation.database.entity.nba.NbaTeamStats;
 import com.api.simulation.dto.nba.NbaTeamRatingResponse;
 import com.api.simulation.dto.nba.NbaTeamResponse;
 import com.api.simulation.prompts.NbaPrompts;
+import com.api.simulation.utils.NbaMatchScheduler;
+import com.api.simulation.utils.transaction.GameUtility;
 import com.api.simulation.utils.transaction.NbaUtility;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +29,8 @@ public class NbaService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final NbaUtility nbaUtility;
+    private final NbaMatchScheduler nbaMatchScheduler;
+    private final GameUtility gameUtility;
 
     public Object generateTeam(){
 
@@ -36,7 +43,9 @@ public class NbaService {
                 .map(t-> NbaTeam.builder()
                         .teamName(t.getName())
                         .teamCity(t.getCity())
-                        .conferenceSide(t.getConferenceSide())
+                        .conference(t.getConference())
+                        .division(t.getDivision())
+                        .teamCode(t.getTeamCode())
                         .build()
                     ).toList();
 
@@ -59,8 +68,7 @@ public class NbaService {
                                 .map(team -> Map.of(
                                         "id", team.getId(),
                                         "city", team.getTeamCity(),
-                                        "name", team.getTeamName(),
-                                        "side", team.getConferenceSide()
+                                        "name", team.getTeamName()
                                 ))
                                 .toList()
                 )
@@ -88,5 +96,29 @@ public class NbaService {
         nbaUtility.saveAllStats(teamStats);
 
         return ResponseEntity.ok(response.getTeams());
+    }
+
+    public ResponseEntity<Object> generateMatch(int limit){
+
+        Game game = gameUtility.findGame("nba");
+        List<GameRule> gameRules = gameUtility.findGameRules(game.getId());
+
+        int year = gameRules.stream()
+                .filter(gr -> "YEAR".equals(gr.getRuleKey()))
+                .findFirst()
+                .map(GameRule::getRuleValue)
+                .map(Integer::parseInt)
+                .orElseThrow(() -> new RuntimeException("YEAR rule not found"));
+
+        Season season = gameRules.stream()
+                .filter(gr -> "GAME_SEASON".equals(gr.getRuleKey()))
+                .findFirst()
+                .map(GameRule::getRuleValue)
+                .map(Season::valueOf)
+                .orElseThrow(() -> new RuntimeException("Season rule not found"));
+
+        var matches = nbaMatchScheduler.generateBatch(season, year, limit);
+
+        return ResponseEntity.ok(matches);
     }
 }

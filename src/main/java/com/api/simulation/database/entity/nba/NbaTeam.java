@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "nba_team")
+@Table(name = "team")
 public class NbaTeam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,12 +27,22 @@ public class NbaTeam {
 
     @Size(max = 100)
     @NotNull
-    @Column(name = "conference_side", nullable = false, length = 100)
-    private String conferenceSide;
-
-    @Size(max = 100)
-    @NotNull
     @Column(name = "team_city", nullable = false, length = 100)
     private String teamCity;
+
+    @Size(max = 10)
+    @NotNull
+    @Column(name = "team_code", nullable = false, length = 10)
+    private String teamCode;
+
+    @NotNull
+    @Lob
+    @Column(name = "conference", nullable = false)
+    private String conference;
+
+    @NotNull
+    @Lob
+    @Column(name = "division", nullable = false)
+    private String division;
 
 }

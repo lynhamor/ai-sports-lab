@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -88,13 +89,17 @@ public class GameUtility {
     /**
      * Retrieves a {@link GameRule} by its ID and associated Game ID.
      *
-     * @param gameRuleId the ID of the game rule
      * @param gameId the ID of the associated game
      * @return the matching {@link GameRule}
      * @throws RuntimeException if no matching game rule is found
      */
-    public GameRule findGameRule(Long gameRuleId, Long gameId) {
-        return gameRuleRepository.findByIdAndGameId(gameRuleId, gameId)
+    public List<GameRule> findGameRules(Long gameId) {
+        return gameRuleRepository.findByGameId( gameId)
+                .orElseThrow(() -> new RuntimeException("Game Rule does not exist"));
+    }
+
+    public GameRule findGameRule(Long gameId, String ruleKey) {
+        return gameRuleRepository.findByGameIdAndRuleKey(gameId, ruleKey)
                 .orElseThrow(() -> new RuntimeException("Game Rule does not exist"));
     }
 

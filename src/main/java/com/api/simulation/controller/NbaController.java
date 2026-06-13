@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(
@@ -75,5 +76,14 @@ public class NbaController {
     public ResponseEntity<Object> generateTeamStats() throws JsonProcessingException {
 
         return nbaService.generateTeamStats();
+    }
+
+
+    @PostMapping("/match")
+    public ResponseEntity<Object> generateMatch(
+            @RequestParam int limit
+    ) {
+        return nbaService.generateMatch(limit);
+
     }
 }

@@ -8,13 +8,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public interface GameRuleRepository extends JpaRepository<GameRule, Long> {
     Optional<GameRule> findByGameIdAndRuleKey(@NotNull Long gameId, @Size(max = 100) @NotNull String ruleKey);
 
-    Optional<GameRule> findByIdAndGameId(Long id, @NotNull Long gameId);
+    Optional<List<GameRule>> findByIdAndGameId(Long id, @NotNull Long gameId);
 
     @Query("""
         SELECT
@@ -30,4 +31,6 @@ public interface GameRuleRepository extends JpaRepository<GameRule, Long> {
             ON gr.gameId = g.id
     """)
     Page<Map<String, Object>> findAllGameRules(Pageable pageable);
+
+    Optional<List<GameRule>> findByGameId(@NotNull Long gameId);
 }

@@ -33,7 +33,13 @@ CREATE TABLE `game_rule` (
 
 LOCK TABLES `game_rule` WRITE;
 /*!40000 ALTER TABLE `game_rule` DISABLE KEYS */;
-INSERT INTO `game_rule` VALUES (1,1,'TOTAL_PACE','100'),(2,1,'REGULAR_MAX_CONS_PLAY','3'),(3,1,'PRESZN_MAX_CONS_PLAY','2'),(4,1,'GAME_EVENT','PRESEASON'),(5,1,'GAME_SEASON','SUMMER'),(6,1,'YEAR','2026');
+INSERT INTO `game_rule` VALUES
+                              (1,1,'TOTAL_PACE','100')
+                             ,(2,1,'REGULAR_MAX_CONS_PLAY','3')
+                             ,(3,1,'PRESZN_MAX_CONS_PLAY','2')
+                             ,(4,1,'GAME_EVENT','PRESEASON')
+                             ,(5,1,'GAME_SEASON','SUMMER')
+                             ,(6,1,'YEAR','2026');
 /*!40000 ALTER TABLE `game_rule` ENABLE KEYS */;
 UNLOCK TABLES;
 
