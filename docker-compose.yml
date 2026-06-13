@@ -18,7 +18,7 @@ services:
       - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: gaming
+      MYSQL_DATABASE: core
     command:
       - --server-id=1
       - --log-bin=mysql-bin
@@ -27,6 +27,7 @@ services:
       - --expire-logs-days=10
     volumes:
       - mariadb-data:/var/lib/mysql
+      - ./sql-script:/docker-entrypoint-initdb.d
 
 
   kafka-1:

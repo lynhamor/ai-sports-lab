@@ -1,8 +1,6 @@
-CREATE DATABASE IF NOT EXISTS `s_core`
+CREATE DATABASE IF NOT EXISTS `core`
     DEFAULT CHARACTER SET utf8mb4
-    COLLATE utf8mb4_uca1400_ai_ci;
-
-USE `s_core`;
+    COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE `nba_team` (
                             `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -13,7 +11,8 @@ CREATE TABLE `nba_team` (
                             UNIQUE KEY `nba_team_unique` (`team_name`, `team_city`, `conference_side`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
-  COLLATE=utf8mb4_uca1400_ai_ci;
+  COLLATE=utf8mb4_unicode_ci;
+
 
 CREATE TABLE `nba_team_stats` (
                                   `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -21,12 +20,15 @@ CREATE TABLE `nba_team_stats` (
                                   `win_rate` DECIMAL(5,4) DEFAULT 0.5000,
                                   `offensive_rate` DECIMAL(5,4) DEFAULT 0.5000,
                                   `defensive_rate` DECIMAL(5,4) DEFAULT 0.5000,
-                                  PRIMARY KEY (`id`)
+                                  PRIMARY KEY (`id`),
+                                  UNIQUE KEY `uk_team_stats_team_id` (`team_id`),
+                                  CONSTRAINT fk_team_stats_team
+                                      FOREIGN KEY (`team_id`) REFERENCES nba_team(`id`)
+                                          ON DELETE CASCADE
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
-  COLLATE=utf8mb4_uca1400_ai_ci;
+  COLLATE=utf8mb4_unicode_ci;
 
--- s_core.game definition
 
 CREATE TABLE `game` (
                         `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -34,14 +36,29 @@ CREATE TABLE `game` (
                         `game_category` varchar(100) NOT NULL,
                         `is_enable` tinyint(1) DEFAULT 1,
                         PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
 
--- s_core.game_rule definition
 
 CREATE TABLE `game_rule` (
                              `id` bigint(20) NOT NULL AUTO_INCREMENT,
                              `game_id` bigint(20) NOT NULL,
                              `rule_key` varchar(100) NOT NULL,
                              `rule_value` longtext NOT NULL,
-                             PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+                             PRIMARY KEY (`id`),
+                             CONSTRAINT fk_game_rule_game
+                                 FOREIGN KEY (`game_id`) REFERENCES game(`id`)
+                                     ON DELETE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE callback_outbox (
+                                 id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                 aggregate_id BIGINT NOT NULL,
+                                 event_type VARCHAR(100),
+                                 payload JSON,
+                                 status VARCHAR(20) DEFAULT 'PENDING',
+                                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
