@@ -1,19 +1,20 @@
-package com.api.simulation.database.entity;
+package com.api.simulation.database.entity.nba;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
-@Table(name = "game")
-public class Game {
+@Table(name = "nba_team")
+public class NbaTeam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -21,16 +22,17 @@ public class Game {
 
     @Size(max = 100)
     @NotNull
-    @Column(name = "game_name", nullable = false, length = 100)
-    private String gameName;
+    @Column(name = "team_name", nullable = false, length = 100)
+    private String teamName;
 
     @Size(max = 100)
     @NotNull
-    @Column(name = "game_category", nullable = false, length = 100)
-    private String gameCategory;
+    @Column(name = "conference_side", nullable = false, length = 100)
+    private String conferenceSide;
 
-    @ColumnDefault("1")
-    @Column(name = "is_enable")
-    private Boolean isEnable;
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "team_city", nullable = false, length = 100)
+    private String teamCity;
 
 }

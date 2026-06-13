@@ -1,12 +1,11 @@
 package com.api.simulation.service;
 
-import com.api.simulation.database.entity.NbaTeam;
-import com.api.simulation.database.entity.NbaTeamStats;
-import com.api.simulation.database.repository.NbaTeamRepository;
-import com.api.simulation.database.repository.NbaTeamStatsRepository;
+import com.api.simulation.database.entity.nba.NbaTeam;
+import com.api.simulation.database.entity.nba.NbaTeamStats;
 import com.api.simulation.dto.nba.NbaTeamRatingResponse;
 import com.api.simulation.dto.nba.NbaTeamResponse;
 import com.api.simulation.prompts.NbaPrompts;
+import com.api.simulation.utils.transaction.NbaUtility;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +22,8 @@ public class NbaService {
 
     private final ChatClient chatClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final NbaTeamRepository nbaTeamRepository;
-    private final NbaTeamStatsRepository nbaTeamStatsRepository;
+
+    private final NbaUtility nbaUtility;
 
     public Object generateTeam(){
 
@@ -41,14 +40,14 @@ public class NbaService {
                         .build()
                     ).toList();
 
-        nbaTeamRepository.saveAll(nbaTeams);
+        nbaUtility.saveAllTeams(nbaTeams);
 
         return nbaTeamResponse.getTeams();
     }
 
     public ResponseEntity<Object> generateTeamStats() throws JsonProcessingException {
 
-        List<NbaTeam> nbaTeams = nbaTeamRepository.findAll();
+        List<NbaTeam> nbaTeams = nbaUtility.findAllTeams();
 
         if(nbaTeams.isEmpty())
             return ResponseEntity.badRequest().body("No teams found");
@@ -86,7 +85,7 @@ public class NbaService {
                                 .build())
                         .toList();
 
-        nbaTeamStatsRepository.saveAll(teamStats);
+        nbaUtility.saveAllStats(teamStats);
 
         return ResponseEntity.ok(response.getTeams());
     }

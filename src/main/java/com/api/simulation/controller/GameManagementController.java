@@ -1,5 +1,6 @@
 package com.api.simulation.controller;
 
+import com.api.simulation.dto.gameMngt.CreateGameDto;
 import com.api.simulation.dto.gameMngt.GameFilterDto;
 import com.api.simulation.dto.gameMngt.GameRuleFilterDto;
 import com.api.simulation.service.GameManagementService;
@@ -25,6 +26,17 @@ public class GameManagementController {
     @PostMapping("/game-list")
     public ResponseEntity<Object> getGameList(GameFilterDto filterDto) {
         return gameManagementService.gameList(filterDto);
+    }
+
+    @Operation(
+            summary = "Create Game",
+            description = "Creates a new game with name and category"
+    )
+    @PostMapping
+    public ResponseEntity<Object> newGame(
+            @RequestBody CreateGameDto payload
+    ){
+        return gameManagementService.createGame(payload);
     }
 
     @Operation(
@@ -69,7 +81,7 @@ public class GameManagementController {
             description = "Retrieve list of game rules with filters."
     )
     @PostMapping("/gameRule-list")
-    public ResponseEntity<Object> getGameList(GameRuleFilterDto filterDto) {
+    public ResponseEntity<Object> getGameRuleList(GameRuleFilterDto filterDto) {
         return gameManagementService.gameRuleList(filterDto);
     }
 

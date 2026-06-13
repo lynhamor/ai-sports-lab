@@ -19,28 +19,28 @@ import java.util.Map;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.api.simulation.database.repository",
-        entityManagerFactoryRef = "entityManagerFactory",
-        transactionManagerRef = "transactionManager"
+        basePackages = "com.api.simulation.database.repository.nba",
+        entityManagerFactoryRef = "nbaEntityManagerFactory",
+        transactionManagerRef = "nbaTransactionManager"
 )
-public class DatasourceConfig {
+public class NbaDatasourceConfig {
 
 
-    @Bean(name = "dataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.hikari")
+    @Bean(name = "nbaDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.nba.hikari")
     public DataSource dataSource() {
         return DataSourceBuilder.create()
                 .type(HikariDataSource.class)
                 .build();
     }
 
-    @Bean(name = "entityManagerFactory")
+    @Bean(name = "nbaEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-            @Qualifier("dataSource") DataSource dataSource
+            @Qualifier("nbaDataSource") DataSource dataSource
     ) {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setDataSource(dataSource);
-        factory.setPackagesToScan("com.api.simulation.database.entity");
+        factory.setPackagesToScan("com.api.simulation.database.entity.nba");
         factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
 
@@ -53,14 +53,14 @@ public class DatasourceConfig {
         jpaProperties.put("hibernate.physical_naming_strategy", "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl");
         jpaProperties.put("hibernate.hbm2ddl.auto", "none");
         factory.setJpaPropertyMap(jpaProperties);
-        factory.setPersistenceUnitName("PU");
+        factory.setPersistenceUnitName("nbaPU");
 
         return factory;
     }
 
-    @Bean(name = "transactionManager")
+    @Bean(name = "nbaTransactionManager")
     public PlatformTransactionManager transactionManager(
-            @Qualifier("entityManagerFactory") EntityManagerFactory entityManagerFactory
+            @Qualifier("nbaEntityManagerFactory") EntityManagerFactory entityManagerFactory
     ) {
         return new JpaTransactionManager(entityManagerFactory);
     }

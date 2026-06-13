@@ -1,4 +1,4 @@
-package com.api.simulation.database.entity;
+package com.api.simulation.database.entity.nba;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

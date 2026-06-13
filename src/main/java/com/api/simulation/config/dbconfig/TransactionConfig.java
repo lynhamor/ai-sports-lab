@@ -83,7 +83,7 @@ public class TransactionConfig {
 
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
         pointcut.setExpression("""
-            execution(* com.api.simulation.utlis.transaction..*(..))
+            execution(* com.api.simulation.utils.transaction..*(..))
         """);
 
         return new DefaultPointcutAdvisor(pointcut, interceptor);

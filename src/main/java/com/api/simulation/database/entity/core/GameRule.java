@@ -1,4 +1,4 @@
-package com.api.simulation.database.entity;
+package com.api.simulation.database.entity.core;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -6,9 +6,6 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
-
-import java.time.Instant;
 
 @Data
 @AllArgsConstructor

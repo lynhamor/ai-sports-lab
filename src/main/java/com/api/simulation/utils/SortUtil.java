@@ -1,4 +1,4 @@
-package com.api.simulation.utlis;
+package com.api.simulation.utils;
 
 import com.api.simulation.common.SortField;
 import org.springframework.data.domain.Sort;

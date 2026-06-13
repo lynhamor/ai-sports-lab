@@ -1,12 +1,13 @@
 package com.api.simulation.service;
 
-import com.api.simulation.database.entity.Game;
-import com.api.simulation.database.entity.GameRule;
+import com.api.simulation.dto.gameMngt.CreateGameDto;
+import com.api.simulation.database.entity.core.Game;
+import com.api.simulation.database.entity.core.GameRule;
 import com.api.simulation.dto.PageDto;
 import com.api.simulation.dto.gameMngt.GameFilterDto;
 import com.api.simulation.dto.gameMngt.GameRuleFilterDto;
-import com.api.simulation.utlis.transaction.GameUtility;
-import com.api.simulation.utlis.SortUtil;
+import com.api.simulation.utils.transaction.GameUtility;
+import com.api.simulation.utils.SortUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -55,8 +58,8 @@ public class GameManagementService {
         Sort sort = SortUtil.build(filterDto);
         Pageable pageable = PageRequest.of(page, filterDto.getSize(), sort);
 
-        Page<GameRule> pageResult = gameUtility.pageGameRules(pageable);
-        PageDto<GameRule> pageDto = new PageDto<>(pageResult);
+        Page<Map<String, Object>> pageResult = gameUtility.pageGameRules(pageable);
+        PageDto<Map<String, Object>> pageDto = new PageDto<>(pageResult);
 
         return ResponseEntity.ok(pageDto);
     }
@@ -150,5 +153,26 @@ public class GameManagementService {
         return ResponseEntity.ok("Game Status updated");
     }
 
+    /**
+     * Creates a new Game entry in the system.
+     *
+     * <p>This method initializes a new {@link Game} entity using the provided
+     * {@link CreateGameDto} payload. The game is automatically enabled upon creation.</p>
+     *
+     * @param payload the request payload containing game name and game category
+     *                required to create a new game
+     * @return ResponseEntity containing a success message indicating the game
+     *         was successfully created
+     *
+     * @apiNote The created game is persisted with default status {@code isEnable = true}.
+     */
+    public ResponseEntity<Object> createGame(CreateGameDto payload) {
+        Game game = new Game();
+        game.setGameName(payload.getGameName());
+        game.setGameCategory(payload.getGameCategory());
+        game.setIsEnable(true);
+        gameUtility.save(game);
 
+        return ResponseEntity.ok("Game created successfully");
+    }
 }
